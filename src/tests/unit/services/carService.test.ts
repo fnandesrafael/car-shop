@@ -4,6 +4,7 @@ import CarService from '../../../services/CarService';
 import { allCarsMockWithId, carMock, carMockWithId } from '../../mocks/carMocks';
 import { Model } from 'mongoose';
 import { ICar } from '../../../interfaces/ICar';
+import { ErrorTypes } from '../../../errors/catalog';
 const { expect } = chai;
 
 describe('Testa a service CarService', () => {
@@ -13,6 +14,8 @@ describe('Testa a service CarService', () => {
       .stub(Model, 'create').resolves(carMockWithId)
     sinon
       .stub(Model, 'find').resolves(allCarsMockWithId)
+    sinon
+      .stub(Model, 'findById').resolves(carMockWithId)
   });
 
   after(()=>{
@@ -52,6 +55,22 @@ describe('Testa a service CarService', () => {
       const sut = await new CarService().read()
 
       expect(sut).to.be.deep.equal(allCarsMockWithId)
+    })
+  })
+
+  describe('ao pesquisar um carro específico', () => {
+    it('com sucesso, e o documento existe é retornado o mesmo', async () => {
+      const sut = await new CarService().readOne('4edd40c86762e0fb12000003')
+
+      expect(sut).to.be.deep.equal(carMockWithId)
+    })
+
+    it('com sucesso, mas o documento é nulo, é disparado um erro "DocumentNotFound"', async () => {
+      try {
+        await new CarService().readOne('4edd40c86762e0fb12000004')
+      } catch(err) {
+        expect(err).to.be.equal(ErrorTypes.DocumentNotFound)
+      }
     })
   })
 });
