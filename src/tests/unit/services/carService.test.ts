@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 import chai from 'chai';
 import CarService from '../../../services/CarService';
-import { carMock, carMockWithId } from '../../mocks/carMocks';
+import { allCarsMockWithId, carMock, carMockWithId } from '../../mocks/carMocks';
 import { Model } from 'mongoose';
 import { ICar } from '../../../interfaces/ICar';
 const { expect } = chai;
@@ -11,13 +11,15 @@ describe('Testa a service CarService', () => {
   before(async () => {
     sinon
       .stub(Model, 'create').resolves(carMockWithId)
+    sinon
+      .stub(Model, 'find').resolves(allCarsMockWithId)
   });
 
   after(()=>{
     sinon.restore();
   })
 
-  describe('quando é criado um novo Car', () => {
+  describe('ao criar um novo carro', () => {
     it('com sucesso, é retornado o documento criado', async () => {
       const sut = await new CarService().create(carMock)
 
@@ -42,6 +44,14 @@ describe('Testa a service CarService', () => {
 
         expect(zodErrorMsg).to.be.equal('Invalid year type was provided')
       }
+    })
+  })
+
+  describe('ao pesquisar todos os carros', () => {
+    it('com sucesso, é retornado um array com todos os carros', async () => {
+      const sut = await new CarService().read()
+
+      expect(sut).to.be.deep.equal(allCarsMockWithId)
     })
   })
 });
