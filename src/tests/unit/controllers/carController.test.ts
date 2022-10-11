@@ -12,7 +12,7 @@ describe('Testa o controller CarController', () => {
   const req = {} as Request
   const res = {} as Response
 
-  before(async () => {
+  beforeEach(() => {
     sinon
       .stub(carController._service, 'create').resolves(carMockWithId)
     sinon
@@ -22,7 +22,7 @@ describe('Testa o controller CarController', () => {
     res.json = sinon.stub().returns(res)
   })
 
-  after(() => {
+  afterEach(() => {
     sinon.restore()
   })
 
