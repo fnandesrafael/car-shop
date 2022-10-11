@@ -19,8 +19,8 @@ const errorHandler: ErrorRequestHandler = (
   const catalogedError = errorCatalog[messageAsErrorType];
 
   if (catalogedError) {
-    const { message, statusCode } = catalogedError;
-    return res.status(statusCode).json({ message });
+    const { error, statusCode } = catalogedError;
+    return res.status(statusCode).json({ error });
   }
   console.log(err.message);
   return res.status(500).json({ message: 'Internal server error' });
