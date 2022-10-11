@@ -9,7 +9,7 @@ const { expect } = chai;
 
 describe('Testa a service CarService', () => {
 
-  before(async () => {
+  beforeEach(() => {
     sinon
       .stub(Model, 'create').resolves(carMockWithId)
     sinon
@@ -18,7 +18,7 @@ describe('Testa a service CarService', () => {
       .stub(Model, 'findById').resolves(carMockWithId)
   });
 
-  after(()=>{
+  afterEach(() => {
     sinon.restore();
   })
 
