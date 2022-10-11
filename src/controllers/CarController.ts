@@ -3,7 +3,7 @@ import CarService from '../services/CarService';
 import { ICar } from '../interfaces/ICar';
 
 class CarController {
-  private _service: CarService;
+  public _service: CarService;
 
   constructor() {
     this._service = new CarService();
