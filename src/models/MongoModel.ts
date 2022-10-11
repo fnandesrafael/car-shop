@@ -1,4 +1,5 @@
 import { Model, isValidObjectId, UpdateQuery } from 'mongoose';
+import { ErrorTypes } from '../errors/catalog';
 import { IModel } from '../interfaces/IModel';
 
 abstract class MongoModel<T> implements IModel<T> {
@@ -17,13 +18,13 @@ abstract class MongoModel<T> implements IModel<T> {
   }
 
   public async readOne(_id: string): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw new Error('InvalidMongoId');
+    if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
 
     return this._model.findById({ _id });
   }
 
   public async update(_id: string, obj: T): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw new Error('InvalidMongoId');
+    if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
 
     const documentExists = await this.readOne(_id);
 
@@ -33,17 +34,17 @@ abstract class MongoModel<T> implements IModel<T> {
         { ...obj } as UpdateQuery<T>,
         { new: true },
       );
-    } throw new Error('DocumentNotFound');
+    } throw new Error(ErrorTypes.DocumentNotFound);
   }
 
   public async delete(_id: string): Promise<T | null> {
-    if (!isValidObjectId(_id)) throw new Error('InvalidMongoId');
+    if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
 
     const documentExists = await this.readOne(_id);
 
     if (documentExists) {
       return this._model.findByIdAndRemove(_id);
-    } throw new Error('DocumentNotFound');
+    } throw new Error(ErrorTypes.DocumentNotFound);
   }
 }
 
