@@ -9,7 +9,7 @@ class CarService {
     this._carModel = new Car();
   }
 
-  public async create(obj: ICar) {
+  public async create(obj: ICar): Promise<ICar> {
     if (Object.keys(obj).length === 0) throw new Error(ErrorTypes.EmptyBody);
     
     const parsed = carSchema.safeParse(obj);
@@ -17,6 +17,10 @@ class CarService {
     if (!parsed.success) { throw parsed.error; }
 
     return this._carModel.create(obj);
+  }
+
+  public async read(): Promise<ICar[]> {
+    return this._carModel.read();
   }
 }
 
