@@ -26,25 +26,17 @@ abstract class MongoModel<T> implements IModel<T> {
   public async update(_id: string, obj: T): Promise<T | null> {
     if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
 
-    const documentExists = await this.readOne(_id);
-
-    if (documentExists) {
-      return this._model.findByIdAndUpdate(
-        { _id },
-        { ...obj } as UpdateQuery<T>,
-        { new: true },
-      );
-    } throw new Error(ErrorTypes.DocumentNotFound);
+    return this._model.findByIdAndUpdate(
+      { _id },
+      { ...obj } as UpdateQuery<T>,
+      { new: true },
+    );
   }
 
   public async delete(_id: string): Promise<T | null> {
     if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
 
-    const documentExists = await this.readOne(_id);
-
-    if (documentExists) {
-      return this._model.findByIdAndRemove(_id);
-    } throw new Error(ErrorTypes.DocumentNotFound);
+    return this._model.findByIdAndRemove(_id);
   }
 }
 

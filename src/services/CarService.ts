@@ -22,6 +22,14 @@ class CarService {
   public async read(): Promise<ICar[]> {
     return this._carModel.read();
   }
+
+  public async readOne(_id: string): Promise<ICar | null> {
+    const car = await this._carModel.readOne(_id);
+
+    if (!car) {
+      throw new Error(ErrorTypes.DocumentNotFound);
+    } return car;
+  }
 }
 
 export default CarService;
