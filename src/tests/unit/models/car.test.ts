@@ -12,6 +12,8 @@ describe('Testa a model Car', () => {
       .stub(Model, 'create').resolves(carMockWithId)
     sinon
       .stub(Model, 'find').resolves(allCarsMockWithId)
+    sinon
+      .stub(Model, 'findById').resolves(carMockWithId)
   });
 
   after(()=>{
@@ -31,6 +33,14 @@ describe('Testa a model Car', () => {
       const sut = await new Car().read()
 
       expect(sut).to.be.deep.equal(allCarsMockWithId)
+    })
+  })
+
+  describe('ao pesquisar um carro específico', () => {
+    it('com sucesso, e o documento existe é retornado o mesmo', async () => {
+      const sut = await new Car().readOne('4edd40c86762e0fb12000003')
+
+      expect(sut).to.be.deep.equal(carMockWithId)
     })
   })
 });
