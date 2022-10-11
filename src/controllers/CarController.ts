@@ -12,7 +12,7 @@ class CarController {
   public async create(req: Request & { body: ICar }, res: Response<ICar>) {
     const response = await this._service.create(req.body);
 
-    return res.status(200).json(response);
+    return res.status(201).json(response);
   }
 }
 
