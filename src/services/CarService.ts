@@ -1,3 +1,4 @@
+import { ErrorTypes } from '../errors/catalog';
 import { carSchema, ICar } from '../interfaces/ICar';
 import Car from '../models/Car';
 
@@ -9,6 +10,8 @@ class CarService {
   }
 
   public async create(obj: ICar) {
+    if (Object.keys(obj).length === 0) throw new Error(ErrorTypes.EmptyBody);
+    
     const parsed = carSchema.safeParse(obj);
 
     if (!parsed.success) { throw parsed.error; }
