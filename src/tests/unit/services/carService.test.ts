@@ -8,14 +8,10 @@ import { ErrorTypes } from '../../../errors/catalog';
 const { expect } = chai;
 
 describe('Testa a service CarService', () => {
-
   beforeEach(() => {
-    sinon
-      .stub(Model, 'create').resolves(carMockWithId)
-    sinon
-      .stub(Model, 'find').resolves(allCarsMockWithId)
-    sinon
-      .stub(Model, 'findById').resolves(carMockWithId)
+    sinon.stub(Model, 'create').resolves(carMockWithId)
+    sinon.stub(Model, 'find').resolves(allCarsMockWithId)
+    sinon.stub(Model, 'findById').resolves(carMockWithId)
   });
 
   afterEach(() => {
@@ -47,7 +43,7 @@ describe('Testa a service CarService', () => {
 
         expect(zodErrorMsg).to.be.equal('Invalid year type was provided')
       }
-    })
+    });
   })
 
   describe('ao pesquisar todos os carros', () => {
@@ -55,7 +51,7 @@ describe('Testa a service CarService', () => {
       const sut = await new CarService().read()
 
       expect(sut).to.be.deep.equal(allCarsMockWithId)
-    })
+    });
   })
 
   describe('ao pesquisar um carro específico', () => {
@@ -63,7 +59,7 @@ describe('Testa a service CarService', () => {
       const sut = await new CarService().readOne('4edd40c86762e0fb12000003')
 
       expect(sut).to.be.deep.equal(carMockWithId)
-    })
+    });
 
     it('com sucesso, mas o documento é nulo, é disparado um erro "DocumentNotFound"', async () => {
       try {
@@ -71,6 +67,6 @@ describe('Testa a service CarService', () => {
       } catch(err) {
         expect(err).to.be.equal(ErrorTypes.DocumentNotFound)
       }
-    })
+    });
   })
 });
