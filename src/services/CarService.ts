@@ -26,11 +26,11 @@ class CarService {
 
     if (!parsed.success) { throw parsed.error; }
 
-    return this._carModel.create(obj);
+    return this.carModel.create(obj);
   }
 
   public async read(): Promise<ICar[]> {
-    return this._carModel.read();
+    return this.carModel.read();
   }
 
   public async readOne(_id: string): Promise<ICar> {
@@ -38,7 +38,7 @@ class CarService {
       throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
     }
     
-    const car = await this._carModel.readOne(_id);
+    const car = await this.carModel.readOne(_id);
 
     if (car === null) {
       throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);
@@ -56,7 +56,7 @@ class CarService {
 
     if (!parsed.success) { throw parsed.error; }
 
-    const car = await this._carModel.update(_id, { ...obj });
+    const car = await this.carModel.update(_id, { ...obj });
 
     if (car === null) {
       throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);
@@ -68,7 +68,7 @@ class CarService {
       throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
     }
     
-    const car = await this._carModel.delete(_id);
+    const car = await this.carModel.delete(_id);
 
     if (car === null) {
       throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);
