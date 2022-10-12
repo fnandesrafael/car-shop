@@ -8,5 +8,6 @@ const carController = new CarController();
 router.post('/cars', (req, res) => carController.create(req, res));
 router.get('/cars', (req, res) => carController.read(req, res));
 router.get('/cars/:id', (req, res) => carController.readOne(req, res));
+router.put('/cars/:id', (req, res) => carController.update(req, res));
 
 export default router;
