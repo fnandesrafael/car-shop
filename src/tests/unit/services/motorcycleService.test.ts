@@ -2,9 +2,10 @@ import { expect } from "chai";
 import * as sinon from "sinon";
 import { ZodError } from "zod";
 import ErrorCode from "../../../errors/ErrorCode";
+import MotorcycleService from "../../../services/MotorcycleService";
 import { motorcycleMock, motorcycleMockWithId } from "../../mocks/motorcycleMocks";
 
-const motorcycleService = new MotorCyleService()
+const motorcycleService = new MotorcycleService()
 
 describe('Testa a service MotorcycleService', () => {
   before(() => {
@@ -15,9 +16,9 @@ describe('Testa a service MotorcycleService', () => {
     sinon.restore()
   })
 
-  describe('quando é criada uma nova moto', () => { 
+  describe.only('quando é criada uma nova moto', () => { 
     it('com sucesso, é retornado o documento criado', async () => {
-      const sut = motorcycleService.create(motorcycleMock)
+      const sut = await motorcycleService.create(motorcycleMock)
 
       expect(sut).to.be.equal(motorcycleMockWithId)
     });
