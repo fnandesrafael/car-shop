@@ -116,6 +116,14 @@ describe('Testa a service CarService', () => {
       } catch(err: any) {
         expect(err).to.be.an.instanceOf(ZodError)
       }
-    })
+    });
+
+    it('sem sucesso, por possuir um body vazio, é disparado um ErrorCode', async () => {
+      try {
+        await carService.update('4edd40c86762e0fb12000007', {} as any)
+      } catch(err: any) {
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
   })
 });

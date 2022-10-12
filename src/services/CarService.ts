@@ -46,6 +46,8 @@ class CarService {
   public async update(_id: string, obj: ICar): Promise<ICar> {
     if (!isValidObjectId(_id)) {
       throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
+    } if (Object.keys(obj).length === 0) {
+      throw new ErrorCode(EmptyBody.message, EmptyBody.statusCode);
     }
 
     const parsed = carSchema.safeParse(obj);
