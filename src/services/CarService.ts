@@ -11,11 +11,13 @@ const {
 } = errorCatalog;
 
 class CarService {
-  public _carModel: Car;
+  private _carModel: Car;
 
   constructor() {
     this._carModel = new Car();
   }
+
+  get carModel() { return this._carModel; }
 
   public async create(obj: ICar): Promise<ICar> {
     if (Object.keys(obj).length === 0) throw new ErrorCode(EmptyBody.message, EmptyBody.statusCode);
@@ -55,6 +57,18 @@ class CarService {
     if (!parsed.success) { throw parsed.error; }
 
     const car = await this._carModel.update(_id, { ...obj });
+
+    if (car === null) {
+      throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);
+    } return car;
+  }
+
+  public async delete(_id: string): Promise<ICar> {
+    if (!isValidObjectId(_id)) {
+      throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
+    }
+    
+    const car = await this._carModel.delete(_id);
 
     if (car === null) {
       throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);

@@ -12,14 +12,17 @@ const carService = new CarService()
 
 describe('Testa a service CarService', () => {
   before(() => {
-    sinon.stub(carService._carModel, 'create').resolves(carMockWithId)
-    sinon.stub(carService._carModel, 'read').resolves(allCarsMockWithId)
-    sinon.stub(carService._carModel, 'readOne')
+    sinon.stub(carService.carModel, 'create').resolves(carMockWithId)
+    sinon.stub(carService.carModel, 'read').resolves(allCarsMockWithId)
+    sinon.stub(carService.carModel, 'readOne')
       .onCall(0).resolves(carMockWithId)
       .onCall(1).resolves(null)
-    sinon.stub(carService._carModel, 'update')
+    sinon.stub(carService.carModel, 'update')
       .onCall(0).resolves(carMockForUpdateWithId)
       .onCall(1 && 2).resolves(null)
+    sinon.stub(carService.carModel, 'delete')
+      .onCall(0).resolves(carMockWithId)
+      .onCall(1).resolves(null)
   });
 
   after(() => {
@@ -122,6 +125,32 @@ describe('Testa a service CarService', () => {
       try {
         await carService.update('4edd40c86762e0fb12000007', {} as any)
       } catch(err: any) {
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+  })
+
+  describe('ao apagar um carro específico', () => {
+    it('com sucesso, e o documento existe, é retornado o mesmo', async () => {
+      const sut = await carService.delete('4edd40c86762e0fb12000003')
+
+      expect(sut).to.be.equal(carMockWithId)
+    });
+
+    it('com sucesso, mas o documento é nulo, é lançado um ErrorCode', async () => {
+      try {
+        await carService.delete('4edd40c86762e0fb12000004')
+      } catch (err) {
+        
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+
+    it('sem sucesso, pois o id é inválido, é lançado um ErrorCode', async () => {
+      try {
+        await carService.delete('123ERRADO')
+      } catch(err) {
+        
         expect(err).to.be.an.instanceOf(ErrorCode)
       }
     });
