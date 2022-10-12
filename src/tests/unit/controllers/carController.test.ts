@@ -1,7 +1,7 @@
 import sinon, { SinonStub } from 'sinon';
 import chai from 'chai';
 import { Request, Response } from 'express';
-import { allCarsMockWithId, carMock, carMockWithId } from '../../mocks/carMocks';
+import { allCarsMockWithId, carMock, carMockForUpdate, carMockForUpdateWithId, carMockWithId } from '../../mocks/carMocks';
 import CarController from '../../../controllers/CarController';
 const { expect } = chai;
 
@@ -15,6 +15,7 @@ describe('Testa o controller CarController', () => {
     sinon.stub(carController._service, 'create').resolves(carMockWithId)
     sinon.stub(carController._service, 'read').resolves(allCarsMockWithId)
     sinon.stub(carController._service, 'readOne').resolves(carMockWithId)
+    sinon.stub(carController._service, 'update').resolves(carMockForUpdateWithId)
 
     res.status = sinon.stub().returns(res)
     res.json = sinon.stub().returns(res)
@@ -65,6 +66,22 @@ describe('Testa o controller CarController', () => {
       await carController.readOne(req, res)
 
       expect((res.json as SinonStub).calledWith(carMockWithId)).to.be.true;
+    });
+  })
+
+  describe('ao atualizar os dados de um carro', () => {
+    it('é retornado um status 200', async () => {
+      req.body = carMockForUpdate
+      await carController.update(req, res)
+
+      expect((res.status as SinonStub).calledWith(200)).to.be.true
+    });
+
+    it('é retornado no body da requisição, o documento atualizado', async () => {
+      req.body = carMockForUpdate
+      await carController.update(req, res)
+
+      expect((res.json as SinonStub).calledWith(carMockForUpdateWithId)).to.be.true
     });
   })
 });

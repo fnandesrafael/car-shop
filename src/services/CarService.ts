@@ -31,7 +31,7 @@ class CarService {
     return this._carModel.read();
   }
 
-  public async readOne(_id: string): Promise<ICar | null> {
+  public async readOne(_id: string): Promise<ICar> {
     if (!isValidObjectId(_id)) {
       throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
     }
@@ -43,7 +43,7 @@ class CarService {
     } return car;
   }
 
-  public async update(_id: string, obj: ICar): Promise<ICar | null> {
+  public async update(_id: string, obj: ICar): Promise<ICar> {
     if (!isValidObjectId(_id)) {
       throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
     }

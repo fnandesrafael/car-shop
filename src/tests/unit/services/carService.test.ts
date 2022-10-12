@@ -2,7 +2,6 @@ import * as sinon from 'sinon';
 import chai from 'chai';
 import CarService from '../../../services/CarService';
 import { allCarsMockWithId, carMock, carMockForUpdate, carMockForUpdateWithId, carMockWithId } from '../../mocks/carMocks';
-import { Model } from 'mongoose';
 import { ICar } from '../../../interfaces/ICar';
 import { ZodError } from 'zod';
 import ErrorCode from '../../../errors/ErrorCode';
