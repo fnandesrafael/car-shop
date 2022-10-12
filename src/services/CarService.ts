@@ -1,7 +1,14 @@
 import { isValidObjectId } from 'mongoose';
-import { ErrorTypes } from '../errors/catalog';
+import errorCatalog from '../errors/errorCatalog';
+import ErrorCode from '../errors/ErrorCode';
 import { carSchema, ICar } from '../interfaces/ICar';
 import Car from '../models/Car';
+
+const {
+  EmptyBody,
+  InvalidMongoId,
+  DocumentNotFound,
+} = errorCatalog;
 
 class CarService {
   private _carModel: Car;
@@ -11,7 +18,7 @@ class CarService {
   }
 
   public async create(obj: ICar): Promise<ICar> {
-    if (Object.keys(obj).length === 0) throw new Error(ErrorTypes.EmptyBody);
+    if (Object.keys(obj).length === 0) throw new ErrorCode(EmptyBody.message, EmptyBody.statusCode);
     
     const parsed = carSchema.safeParse(obj);
 
@@ -25,12 +32,14 @@ class CarService {
   }
 
   public async readOne(_id: string): Promise<ICar | null> {
-    if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
+    if (!isValidObjectId(_id)) {
+      throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
+    }
     
     const car = await this._carModel.readOne(_id);
 
-    if (!car) {
-      throw new Error(ErrorTypes.DocumentNotFound);
+    if (car === null) {
+      throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);
     } return car;
   }
 }
