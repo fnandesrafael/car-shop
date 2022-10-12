@@ -11,7 +11,7 @@ const {
 } = errorCatalog;
 
 class CarService {
-  private _carModel: Car;
+  public _carModel: Car;
 
   constructor() {
     this._carModel = new Car();
@@ -37,6 +37,22 @@ class CarService {
     }
     
     const car = await this._carModel.readOne(_id);
+
+    if (car === null) {
+      throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);
+    } return car;
+  }
+
+  public async update(_id: string, obj: ICar): Promise<ICar | null> {
+    if (!isValidObjectId(_id)) {
+      throw new ErrorCode(InvalidMongoId.message, InvalidMongoId.statusCode);
+    }
+
+    const parsed = carSchema.safeParse(obj);
+
+    if (!parsed.success) { throw parsed.error; }
+
+    const car = await this._carModel.update(_id, { ...obj });
 
     if (car === null) {
       throw new ErrorCode(DocumentNotFound.message, DocumentNotFound.statusCode);

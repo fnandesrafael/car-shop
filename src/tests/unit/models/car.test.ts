@@ -11,14 +11,12 @@ describe('Testa a model Car', () => {
   before(() => {
     sinon.stub(Model, 'create').resolves(carMockWithId)
     sinon.stub(Model, 'find').resolves(allCarsMockWithId)
-    sinon
-      .stub(Model, 'findById')
-        .onCall(0).resolves(carMockWithId)
-        .onCall(1).resolves(null)
-    sinon
-      .stub(Model, 'findByIdAndUpdate')
-        .onCall(0).resolves(carMockForUpdateWithId)
-        .onCall(1).resolves(null)
+    sinon.stub(Model, 'findById')
+      .onCall(0).resolves(carMockWithId)
+      .onCall(1).resolves(null)
+    sinon.stub(Model, 'findByIdAndUpdate')
+      .onCall(0).resolves(carMockForUpdateWithId)
+      .onCall(1).resolves(null)
   });
 
   after(() => {

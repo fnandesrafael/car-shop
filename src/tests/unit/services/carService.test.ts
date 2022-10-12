@@ -1,7 +1,7 @@
 import * as sinon from 'sinon';
 import chai from 'chai';
 import CarService from '../../../services/CarService';
-import { allCarsMockWithId, carMock, carMockWithId } from '../../mocks/carMocks';
+import { allCarsMockWithId, carMock, carMockForUpdate, carMockForUpdateWithId, carMockWithId } from '../../mocks/carMocks';
 import { Model } from 'mongoose';
 import { ICar } from '../../../interfaces/ICar';
 import { ZodError } from 'zod';
@@ -13,11 +13,14 @@ const carService = new CarService()
 
 describe('Testa a service CarService', () => {
   before(() => {
-    sinon.stub(Model, 'create').resolves(carMockWithId)
-    sinon.stub(Model, 'find').resolves(allCarsMockWithId)
-    sinon.stub(Model, 'findById')
+    sinon.stub(carService._carModel, 'create').resolves(carMockWithId)
+    sinon.stub(carService._carModel, 'read').resolves(allCarsMockWithId)
+    sinon.stub(carService._carModel, 'readOne')
       .onCall(0).resolves(carMockWithId)
       .onCall(1).resolves(null)
+    sinon.stub(carService._carModel, 'update')
+      .onCall(0).resolves(carMockForUpdateWithId)
+      .onCall(1 && 2).resolves(null)
   });
 
   after(() => {
@@ -74,5 +77,46 @@ describe('Testa a service CarService', () => {
         expect(err).to.be.an.instanceOf(ErrorCode)
       }
     });
+
+    it('sem sucesso, por possuir um id inválido, é disparado um ErrorCode', async () => {
+      try {
+        await carService.readOne('123ERRADO')
+      } catch(err) {
+        
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+  })
+
+  describe('ao atualizar os dados de um carro', () => {
+    it('com sucesso, e o documento existe, é retornado o documento atualizado', async () => {
+      const sut = await carService.update('4edd40c86762e0fb12000004', carMockForUpdate)
+
+      expect(sut).to.be.equal(carMockForUpdateWithId)
+    });
+
+    it('com sucesso, mas o documento é nulo, é disparado um ErrorCode', async () => {
+      try {
+        await carService.update('4edd40c86762e0fb12000007', carMockForUpdate)
+      } catch(err: any) {
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+
+    it('sem sucesso, por possuir um id inválido, é disparado um ErrorCode', async () => {
+      try {
+        await carService.update('4edd40c86762e0fb12000007', carMockForUpdate)
+      } catch(err: any) {
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+
+    it('sem sucesso, por possuir uma formatação inválida, é disparado um ZodError', async () => {
+      try {
+        await carService.update('4edd40c86762e0fb12000007', {...carMockForUpdate, year: "2020"} as any)
+      } catch(err: any) {
+        expect(err).to.be.an.instanceOf(ZodError)
+      }
+    })
   })
 });
