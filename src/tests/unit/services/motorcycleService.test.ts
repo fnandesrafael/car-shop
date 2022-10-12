@@ -16,7 +16,7 @@ describe('Testa a service MotorcycleService', () => {
     sinon.restore()
   })
 
-  describe.only('quando é criada uma nova moto', () => { 
+  describe('quando é criada uma nova moto', () => { 
     it('com sucesso, é retornado o documento criado', async () => {
       const sut = await motorcycleService.create(motorcycleMock)
 

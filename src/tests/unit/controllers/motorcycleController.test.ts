@@ -1,6 +1,7 @@
 import { expect } from "chai";
 import { Request, Response } from "express";
 import sinon, { SinonStub } from 'sinon'
+import MotorcycleController from "../../../controllers/MotorcycleController";
 import { motorcycleMock, motorcycleMockWithId } from "../../mocks/motorcycleMocks";
 
 const motorcycleController = new MotorcycleController()
@@ -9,14 +10,14 @@ describe('Testa a camada MotorcycleController', () => {
   const req = {} as Request
   const res = {} as Response
   
-  beforeEach(() => {
+  before(() => {
     sinon.stub(motorcycleController.motorcycleService, 'create').resolves(motorcycleMockWithId)
     
     res.status = sinon.stub().returns(res)
     res.json = sinon.stub().returns(res)
   })
 
-  afterEach(() => {
+  after(() => {
     sinon.restore
   })
   
