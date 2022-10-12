@@ -3,20 +3,22 @@ import CarService from '../services/CarService';
 import { ICar } from '../interfaces/ICar';
 
 class CarController {
-  public _service: CarService;
+  private _service: CarService;
 
   constructor() {
     this._service = new CarService();
   }
 
+  get service() { return this._service; }
+
   public async create(req: Request & { body: ICar }, res: Response<ICar>) {
-    const response = await this._service.create(req.body);
+    const response = await this.service.create(req.body);
 
     return res.status(201).json(response);
   }
 
-  public async read(req: Request & { body: ICar }, res: Response<ICar[]>) {
-    const response = await this._service.read();
+  public async read(_req: Request, res: Response<ICar[]>) {
+    const response = await this.service.read();
 
     return res.status(200).json(response);
   }
@@ -24,7 +26,7 @@ class CarController {
   public async readOne(req: Request & { body: ICar }, res: Response<ICar>) {
     const { id } = req.params;
 
-    const response = await this._service.readOne(id);
+    const response = await this.service.readOne(id);
 
     return res.status(200).json(response);
   }
@@ -33,9 +35,17 @@ class CarController {
     const { id } = req.params;
     const { body } = req;
 
-    const response = await this._service.update(id, body);
+    const response = await this.service.update(id, body);
 
     return res.status(200).json(response);
+  }
+
+  public async delete(req: Request, res: Response) {
+    const { id } = req.params;
+    
+    await this.service.delete(id);
+
+    return res.status(204).json();
   }
 }
 

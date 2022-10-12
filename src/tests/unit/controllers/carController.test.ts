@@ -12,10 +12,11 @@ describe('Testa o controller CarController', () => {
   const res = {} as Response
   
   beforeEach(() => {
-    sinon.stub(carController._service, 'create').resolves(carMockWithId)
-    sinon.stub(carController._service, 'read').resolves(allCarsMockWithId)
-    sinon.stub(carController._service, 'readOne').resolves(carMockWithId)
-    sinon.stub(carController._service, 'update').resolves(carMockForUpdateWithId)
+    sinon.stub(carController.service, 'create').resolves(carMockWithId)
+    sinon.stub(carController.service, 'read').resolves(allCarsMockWithId)
+    sinon.stub(carController.service, 'readOne').resolves(carMockWithId)
+    sinon.stub(carController.service, 'update').resolves(carMockForUpdateWithId)
+    sinon.stub(carController.service, 'delete').resolves()
 
     res.status = sinon.stub().returns(res)
     res.json = sinon.stub().returns(res)
@@ -83,5 +84,21 @@ describe('Testa o controller CarController', () => {
 
       expect((res.json as SinonStub).calledWith(carMockForUpdateWithId)).to.be.true
     });
+  })
+
+  describe.only('ao apagar um carro específico', () => {
+    it('com sucesso, é retornado um status 204', async () => {
+      req.params = {id: '4edd40c86762e0fb12000003'}
+      await carController.delete(req, res)
+
+      expect((res.status as SinonStub).calledWith(204)).to.be.true
+    });
+
+    it('com sucesso, é retornado um body vazio', async () => {
+      req.params = {id: '4edd40c86762e0fb12000003'}
+      await carController.delete(req, res)
+
+      expect((res.json as SinonStub).calledWith()).to.be.true
+    })
   })
 });
