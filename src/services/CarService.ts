@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose';
 import { ErrorTypes } from '../errors/catalog';
 import { carSchema, ICar } from '../interfaces/ICar';
 import Car from '../models/Car';
@@ -24,6 +25,8 @@ class CarService {
   }
 
   public async readOne(_id: string): Promise<ICar | null> {
+    if (!isValidObjectId(_id)) throw new Error(ErrorTypes.InvalidMongoId);
+    
     const car = await this._carModel.readOne(_id);
 
     if (!car) {
