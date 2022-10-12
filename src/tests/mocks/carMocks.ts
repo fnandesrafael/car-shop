@@ -41,8 +41,29 @@ const allCarsMockWithId: ICar[] & {_id: string}[] = [
   
 ]
 
+const carMockForUpdate: ICar = {
+  model: 'Fox',
+  year: 2020,
+  color: 'Branco',
+  buyValue: 50000,
+  doorsQty: 4,
+  seatsQty: 5
+}
+
+const carMockForUpdateWithId: ICar & {_id: string} = {
+  _id: "4edd40c86762e0fb12000004",
+  model: 'Fox',
+  year: 2020,
+  color: 'Branco',
+  buyValue: 50000,
+  doorsQty: 4,
+  seatsQty: 5
+}
+
 export {
   carMock,
   carMockWithId,
-  allCarsMockWithId
+  allCarsMockWithId,
+  carMockForUpdate,
+  carMockForUpdateWithId
 }
