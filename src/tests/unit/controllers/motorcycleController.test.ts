@@ -15,6 +15,7 @@ describe('Testa a camada MotorcycleController', () => {
     sinon.stub(motorcycleController.motorcycleService, 'read')
       .onCall(0 && 1).resolves(allMotorcyclesMockWithId)
       .onCall(2).resolves([])
+    sinon.stub(motorcycleController.motorcycleService, 'readOne').resolves(motorcycleMockWithId)
     
     res.status = sinon.stub().returns(res)
     res.json = sinon.stub().returns(res)
@@ -57,6 +58,24 @@ describe('Testa a camada MotorcycleController', () => {
       await motorcycleController.read(req, res)
       
       expect((res.json as SinonStub).calledWith([])).to.be.true
+    });
+  })
+
+  describe('quando é pesquisado uma moto específica', () => {
+    it('com sucesso, é retornado um status 200', async () => {
+      req.params = {id: '4edd40c86762e0fb12000003'}
+
+      await motorcycleController.readOne(req, res)
+
+      expect((res.status as SinonStub).calledWith(200)).to.be.true
+    });
+
+    it('com sucesso, é retornado no body o documento pesquisado', async () => {
+      req.params = {id: '4edd40c86762e0fb12000003'}
+
+      await motorcycleController.readOne(req, res)
+
+      expect((res.json as SinonStub).calledWith(motorcycleMockWithId)).to.be.true
     });
   })
 });
