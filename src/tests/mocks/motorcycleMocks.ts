@@ -19,7 +19,20 @@ const motorcycleMockWithId: IMotorcycle & {_id: string} = {
   engineCapacity: 2000
 }
 
+const allMotorcyclesMockWithId: IMotorcycle[] & {_id: string}[] = [
+  {
+    _id: '4edd40c86762e0fb12000003',
+    model: 'Hornet',
+    color: 'Vermelha',
+    year: 2017,
+    buyValue: 70000,
+    category: 'Street',
+    engineCapacity: 2000
+  }
+]
+
 export {
   motorcycleMock,
-  motorcycleMockWithId
+  motorcycleMockWithId,
+  allMotorcyclesMockWithId
 }
