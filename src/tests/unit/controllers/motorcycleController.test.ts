@@ -40,7 +40,7 @@ describe('Testa a camada MotorcycleController', () => {
     });
   });
 
-  describe.only('quando forem listadas todas as motos cadastradas', () => { 
+  describe('quando forem listadas todas as motos cadastradas', () => { 
     it('com sucesso, e há motos cadastradas, é retornado um status 200', async () => {
       await motorcycleController.read(req, res)
 
