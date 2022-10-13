@@ -22,6 +22,14 @@ class MotorcycleController {
 
     return res.status(200).json(response);
   }
+
+  public async readOne(req: Request & { body: IMotorcycle }, res: Response) {
+    const { id } = req.params;
+
+    const response = await this.motorcycleService.readOne(id);
+
+    return res.status(200).json(response);
+  }
 }
 
 export default MotorcycleController;
