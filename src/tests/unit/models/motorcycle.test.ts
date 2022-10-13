@@ -31,6 +31,7 @@ describe('Testa a model Motorcycle', () => {
       const sut = await motorcycleModel.read()
 
       expect(sut).to.be.an('array')
+      expect(sut).to.not.be.empty
     })
 
     it('com sucesso, mas não há nenhuma moto cadastrada, é tornado um array vazio', async () => {
