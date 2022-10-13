@@ -12,6 +12,9 @@ describe('Testa a model Motorcycle', () => {
     sinon.stub(Model, 'find')
       .onCall(0).resolves(allMotorcyclesMockWithId)
       .onCall(1).resolves([])
+    sinon.stub(Model, 'findById')
+      .onCall(0).resolves(motorcycleMockWithId)
+      .onCall(1).resolves(null)
   })
 
   after(() => {
@@ -40,5 +43,19 @@ describe('Testa a model Motorcycle', () => {
       expect(sut).to.be.an('array')
       expect(sut).to.be.empty
     })
+  });
+
+  describe('quando é pesquisado uma moto específica', () => {
+    it('com sucesso, e a moto está cadastrada no banco, é retornado o documento pesquisado', async () => {
+      const sut = await motorcycleModel.readOne('4edd40c86762e0fb12000003')
+
+      expect(sut).to.be.equal(motorcycleMockWithId)
+    });
+
+    it('com sucesso, mas a moto não está cadastrada no banco, é retornado null', async () => {
+      const sut = await motorcycleModel.readOne('4edd40c86762e0fb12000003')
+
+      expect(sut).to.be.equal(null)
+    });
   });
 });
