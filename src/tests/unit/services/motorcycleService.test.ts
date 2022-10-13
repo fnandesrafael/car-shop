@@ -45,7 +45,7 @@ describe('Testa a service MotorcycleService', () => {
     });
   });
 
-  describe.only('quando forem listadas todas as motos cadastradas', () => {
+  describe('quando forem listadas todas as motos cadastradas', () => {
     it('com sucesso, e há motos cadastradas, é retornado um array com os documentos', async () => {
       const sut = await motorcycleService.read();
 
