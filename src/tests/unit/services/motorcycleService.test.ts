@@ -82,7 +82,7 @@ describe('Testa a service MotorcycleService', () => {
       try {
         await motorcycleService.readOne('4edd40c86762e0fb12000003')
       } catch(err) {
-        
+
         expect(err).to.be.an.instanceOf(ErrorCode)
       }
     });
