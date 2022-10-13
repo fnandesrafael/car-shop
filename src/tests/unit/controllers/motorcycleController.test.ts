@@ -56,7 +56,7 @@ describe('Testa a camada MotorcycleController', () => {
     it('com sucesso, mas não há nenhuma moto cadastrada, é tornado um body com um array vazio', async () => {
       await motorcycleController.read(req, res)
       
-      expect((res.status as SinonStub).calledWith([])).to.be.true
+      expect((res.json as SinonStub).calledWith([])).to.be.true
     });
   })
 });
