@@ -19,7 +19,7 @@ describe('Testa a service MotorcycleService', () => {
     sinon.restore()
   })
 
-  describe.only('quando é criada uma nova moto', () => { 
+  describe('quando é criada uma nova moto', () => { 
     it('com sucesso, é retornado o documento criado', async () => {
       const sut = await motorcycleService.create(motorcycleMock)
 
@@ -45,7 +45,7 @@ describe('Testa a service MotorcycleService', () => {
     });
   });
 
-  describe('quando forem listadas todas as motos cadastradas', () => {
+  describe.only('quando forem listadas todas as motos cadastradas', () => {
     it('com sucesso, e há motos cadastradas, é retornado um array com os documentos', async () => {
       const sut = await motorcycleService.read();
 

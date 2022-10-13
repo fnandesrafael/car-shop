@@ -29,6 +29,12 @@ class MotorcycleService {
 
     return motorcycle;
   }
+
+  public async read(): Promise<IMotorcycle[] | []> {
+    const motorcycles = await this.motorcycleModel.read();
+
+    return motorcycles;
+  }
 }
 
 export default MotorcycleService;
