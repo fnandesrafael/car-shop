@@ -13,6 +13,7 @@ describe('Testa a service MotorcycleService', () => {
     sinon.stub(motorcycleService.motorcycleModel, 'read')
       .onCall(0).resolves(allMotorcyclesMockWithId)
       .onCall(1).resolves([])
+    sinon.stub(motorcycleService.motorcycleModel, 'readOne').resolves(motorcycleMockWithId)
   })
 
   after(() => {
@@ -60,4 +61,30 @@ describe('Testa a service MotorcycleService', () => {
       expect(sut).to.be.empty
     })
   });
+
+  describe('quando é pesquisado uma moto específica', () => {
+    it('com sucesso, e a moto está cadastrada no banco, é retornado o documento pesquisado', async () => {
+      const sut = await motorcycleService.readOne('4edd40c86762e0fb12000003')
+
+      expect(sut).to.be.equal(motorcycleMockWithId)
+    });
+
+    it('com sucesso, mas a moto não está cadastrada no banco, é disparado um ErrorCode', async () => {
+      try {
+        await motorcycleService.readOne('4edd40c86762e0fb12000005')
+      } catch(err) {
+        
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+
+    it('sem sucesso, pois o id passado não possui um formado válido, é disparado um ErrorCode', async () => {
+      try {
+        await motorcycleService.readOne('4edd40c86762e0fb12000003')
+      } catch(err) {
+        
+        expect(err).to.be.an.instanceOf(ErrorCode)
+      }
+    });
+  })
 })
